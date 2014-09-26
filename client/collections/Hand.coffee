@@ -6,6 +6,8 @@ class window.Hand extends Backbone.Collection
 
   hit: ->
     @add(@deck.pop()).last()
+    console.log "hit in hand"
+    @bustOr21()
 
   scores: ->
     # The scores are an array of potential scores.
@@ -18,3 +20,15 @@ class window.Hand extends Backbone.Collection
       score + if card.get 'revealed' then card.get 'value' else 0
     , 0
     if hasAce then [score, score + 10] else [score]
+
+  bustOr21: ->
+    scoreArray = @scores()
+
+    console.log "bustOr21 in hand"
+
+    if scoreArray[0] == 21 or scoreArray[1] == 21
+      console.log "trigger win"
+      @trigger('win', this)
+    if scoreArray[0] > 21 and (not scoreArray[1] or scoreArray[1] > 21)
+      console.log "trigger lose"
+      @trigger('lose', this)
