@@ -21,4 +21,3 @@ class window.HandView extends Backbone.View
     # if @collection.scores()[0] > 21 and (not @collection.scores()[1] or @collection.scores()[1] > 21)
     #   @$('.score').text "BUST!"
     #   confirm "You busted. Play again?"
-

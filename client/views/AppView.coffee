@@ -51,6 +51,6 @@ class window.AppView extends Backbone.View
     hand.on('win', @win, @)
     hand.on('lose', @lose, @)
     dealerHand = @model.get('dealerHand')
-    dealerHand.on('win', @lose, @)
-    dealerHand.on('lose', @win, @)
+    dealerHand.on('win', @dealerWin, @)
+    dealerHand.on('lose', @dealerLose, @)
     @render()
