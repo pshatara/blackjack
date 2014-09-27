@@ -8,11 +8,9 @@ class window.Hand extends Backbone.Collection
   hit: (scores) ->
     if @deck.length == 0 then @deck.shuffle()
     @add(@deck.pop()).last()
-    console.log "hit in hand", scores
     if @isDealer then @compare(scores) else @bustOr21()
 
   scores: ->
-    # console.log 'scores'
     # The scores are an array of potential scores.
     # Usually, that array contains one element. That is the only score.
     # when there is an ace, it offers you two scores - the original score, and score + 10.
@@ -25,7 +23,6 @@ class window.Hand extends Backbone.Collection
     if hasAce then [score, score + 10] else [score]
 
   stand: (scores) ->
-    console.log('stand ', scores)
     if not @models[0].get('revealed') then @models[0].flip()
 
     if @scores()[1]!=undefined and @scores()[1] > 16 then @compare(scores)
@@ -35,22 +32,14 @@ class window.Hand extends Backbone.Collection
   bustOr21: ->
     scoreArray = @scores()
 
-    console.log "bustOr21 in hand"
-
-    if scoreArray[0] == 21 or scoreArray[1] == 21
-      console.log "trigger win"
-      @trigger 'win', @
-    if scoreArray[0] > 21 and (not scoreArray[1] or scoreArray[1] > 21)
-      console.log "trigger lose"
-      @trigger 'lose', @
+    if scoreArray[0] == 21 or scoreArray[1] == 21 then @trigger 'win', @
+    if scoreArray[0] > 21 and (not scoreArray[1] or scoreArray[1] > 21) then @trigger 'lose', @
 
   compare: (scores) ->
-    console.log(scores, @scores())
     userScore = scores[1]
 
     # USER - If ace and score is greater than 21, use low ace
     if userScore == undefined or userScore > 21
-      console.log 'User score set to ' + scores[0]
       userScore = scores[0]
 
 
@@ -65,8 +54,6 @@ class window.Hand extends Backbone.Collection
       # else @trigger "lose"
 
     #If dealer has lower score
-    console.log 'user scores array is ' + scores
-    console.log ('user score ' + userScore)
     if userScore > @scores()[0]
       if @scores()[0] <= 16 then @hit(scores)
       else @trigger "lose"

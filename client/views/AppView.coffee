@@ -10,12 +10,10 @@ class window.AppView extends Backbone.View
     "click .hit-button": ->
       @model.get('playerHand').hit()
     "click .stand-button": ->
-      console.log "playerHand " , @model.get('playerHand').scores()
       @model.get('dealerHand').stand(@model.get('playerHand').scores())
     "click .re-shuffle": ->
       @model.get('deck').length = 0
       @model.get('deck').shuffle()
-      console.log(@model.get('deck').length)
 
   initialize: ->
     @render()
@@ -33,23 +31,23 @@ class window.AppView extends Backbone.View
     @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
 
   dealerWin: ->
-    console.log "DEALER WINS"
     @lose()
   dealerLose:->
-    console.log "DEALER LOSES"
     @win()
   win: ->
-    console.log "YOU WIN"
-    if confirm "You won! Play again?"
-      @newGame()
+    setTimeout(=>
+      if confirm "You won! Play again?"
+        @newGame()
+    , 100);
+
 
   lose: ->
-    console.log "YOU LOSE"
-    if confirm "You lose... Play again?"
-      @newGame()
+    setTimeout(=>
+      if confirm "You lose... Play again?"
+        @newGame()
+    , 100);
 
   newGame: ->
-    console.log "newGame in AppView"
     if @model.get('deck').length < 4
       @model.get('deck').shuffle()
     @model.deal()

@@ -12,3 +12,5 @@ class window.CardView extends Backbone.View
     @$el.children().detach().end().html
     @$el.html @template @model.attributes
     @$el.addClass 'covered' unless @model.get 'revealed'
+    if @model.get 'revealed'
+      @$el.attr('style', "background-image:" + "url('img/cards/" + @model.get('rankName') + "-" + @model.get('suitName') + ".png')")

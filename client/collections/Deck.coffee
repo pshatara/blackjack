@@ -6,7 +6,6 @@ class window.Deck extends Backbone.Collection
     @shuffle()
 
   shuffle: ->
-    console.log('SHUFFLING')
     @add _([0...52]).shuffle().map (card) ->
       new Card
         rank: card % 13

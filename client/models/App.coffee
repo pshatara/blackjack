@@ -7,9 +7,7 @@ class window.App extends Backbone.Model
     @set 'dealerHand', deck.dealDealer()
 
   deal: ->
-    console.log 'deal in App Model'
     deck = @get 'deck'
-    console.log 'deck: ' + deck
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
 
