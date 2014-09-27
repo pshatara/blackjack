@@ -32,19 +32,18 @@ class window.AppView extends Backbone.View
 
   dealerWin: ->
     @lose()
+
   dealerLose:->
     @win()
+
   win: ->
     setTimeout(=>
-      if confirm "You won! Play again?"
-        @newGame()
+      if confirm "You won! Play again?" then @newGame()
     , 100);
-
 
   lose: ->
     setTimeout(=>
-      if confirm "You lose... Play again?"
-        @newGame()
+      if confirm "You lose... Play again?" then @newGame()
     , 100);
 
   newGame: ->
@@ -52,10 +51,11 @@ class window.AppView extends Backbone.View
       @model.get('deck').shuffle()
     @model.deal()
 
-    hand = @model.get('playerHand')
-    hand.on('win', @win, @)
-    hand.on('lose', @lose, @)
+    playerHand = @model.get('playerHand')
     dealerHand = @model.get('dealerHand')
+
+    playerHand.on('win', @win, @)
+    playerHand.on('lose', @lose, @)
     dealerHand.on('win', @dealerWin, @)
     dealerHand.on('lose', @dealerLose, @)
     @render()

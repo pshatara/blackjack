@@ -31,27 +31,22 @@ class window.Hand extends Backbone.Collection
 
   bustOr21: ->
     scoreArray = @scores()
-
     if scoreArray[0] == 21 or scoreArray[1] == 21 then @trigger 'win', @
     if scoreArray[0] > 21 and (not scoreArray[1] or scoreArray[1] > 21) then @trigger 'lose', @
 
   compare: (scores) ->
     userScore = scores[1]
+    # If user has an ace and score is greater than 21, use low ace
+    if userScore == undefined or userScore > 21 then userScore = scores[0]
 
-    # USER - If ace and score is greater than 21, use low ace
-    if userScore == undefined or userScore > 21
-      userScore = scores[0]
-
-
+    # If user has an ace, their score is higher than the users but less than 17
     if @scores()[1]?
       if userScore > @scores()[1]
         if @scores()[1] <= 16 then @hit(scores)
-
       #If dealer has higher score
       else if @scores()[1] < 22
         @trigger "win", @
         return
-      # else @trigger "lose"
 
     #If dealer has lower score
     if userScore > @scores()[0]
