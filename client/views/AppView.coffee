@@ -12,6 +12,10 @@ class window.AppView extends Backbone.View
     "click .stand-button": ->
       console.log "playerHand " , @model.get('playerHand').scores()
       @model.get('dealerHand').stand(@model.get('playerHand').scores())
+    "click .re-shuffle": ->
+      @model.get('deck').length = 0
+      @model.get('deck').shuffle()
+      console.log(@model.get('deck').length)
 
   initialize: ->
     @render()
@@ -46,7 +50,10 @@ class window.AppView extends Backbone.View
 
   newGame: ->
     console.log "newGame in AppView"
+    if @model.get('deck').length < 4
+      @model.get('deck').shuffle()
     @model.deal()
+
     hand = @model.get('playerHand')
     hand.on('win', @win, @)
     hand.on('lose', @lose, @)

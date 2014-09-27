@@ -6,6 +6,7 @@ class window.Hand extends Backbone.Collection
     if not @isDealer then @bustOr21();
 
   hit: (scores) ->
+    if @deck.length == 0 then @deck.shuffle()
     @add(@deck.pop()).last()
     console.log "hit in hand", scores
     if @isDealer then @compare(scores) else @bustOr21()
