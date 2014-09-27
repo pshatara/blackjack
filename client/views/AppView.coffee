@@ -9,14 +9,18 @@ class window.AppView extends Backbone.View
   events:
     "click .hit-button": ->
       @model.get('playerHand').hit()
-      # @model.get('playerHand').bustOr21()
-    "click .stand-button": -> @model.get('playerHand').stand()
+    "click .stand-button": ->
+      console.log "playerHand " , @model.get('playerHand').scores()
+      @model.get('dealerHand').stand(@model.get('playerHand').scores())
 
   initialize: ->
     @render()
     hand = @model.get('playerHand')
     hand.on('win', @win, @)
     hand.on('lose', @lose, @)
+    dealerHand = @model.get('dealerHand')
+    dealerHand.on('win', @dealerWin, @)
+    dealerHand.on('lose', @dealerLose, @)
 
   render: ->
     @$el.children().detach()
@@ -24,11 +28,19 @@ class window.AppView extends Backbone.View
     @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
     @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
 
+  dealerWin: ->
+    console.log "DEALER WINS"
+    @lose()
+  dealerLose:->
+    console.log "DEALER LOSES"
+    @win()
   win: ->
+    console.log "YOU WIN"
     if confirm "You won! Play again?"
       @newGame()
 
   lose: ->
+    console.log "YOU LOSE"
     if confirm "You lose... Play again?"
       @newGame()
 
@@ -38,4 +50,7 @@ class window.AppView extends Backbone.View
     hand = @model.get('playerHand')
     hand.on('win', @win, @)
     hand.on('lose', @lose, @)
+    dealerHand = @model.get('dealerHand')
+    dealerHand.on('win', @lose, @)
+    dealerHand.on('lose', @win, @)
     @render()
